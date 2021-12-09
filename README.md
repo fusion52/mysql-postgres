@@ -10,7 +10,7 @@ This setup was inspired while setting up a database lab for the Udemy course
 
 ## Outline
 - Clone mysql-postgres repo
-- Install SQLTools drivers: MySQL/MariaDB and PostreSQL (Optional)
+- Install SQLTools drivers: MySQL/MariaDB and PostgreSQL (Optional)
 - Install Docker Desktop
 - Verify Docker setup
 - Start and deploy containers using docker-compose.yml
@@ -50,7 +50,7 @@ tree .
 
     2 directories, 10 files
 
-## 2. Install SQLTools drivers: MySQL/MariaDB and PostreSQL (Optional)
+## 2. Install SQLTools drivers: MySQL/MariaDB and PostgreSQL (Optional)
 
 Optional for those using [Visual Studio Code](https://code.visualstudio.com/) IDE.
 Install [Visual Studio Code](https://marketplace.visualstudio.com/vscode) extensions.
