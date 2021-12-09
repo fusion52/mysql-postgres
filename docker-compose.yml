@@ -1,0 +1,56 @@
+version: '3.3'
+services:
+# https://marketplace.visualstudio.com/search?term=tag%3Asqltools-driver&target=VSCode&category=All%20categories&sortBy=Relevance
+# Install SQLTools drivers: MySQL/MariaDB and PostreSQL 
+#
+# MySQL container 
+  mysql-db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'default'
+      # So you don't have to use root, but you can if you like
+      # MYSQL_USER: 'user'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'password'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - mysql-db-vol:/var/lib/mysql
+      - ./mysql/test.sql:/tmp/test.sql
+      - ./mysql/setup.sql:/tmp/setup.sql
+
+# PostgreSQL container 
+  postgres-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DATABASE: 'default'
+      # So you don't have to use root, but you can if you like
+      # POSTGRES_USER: 'user'
+      # You can use whatever password you like
+      POSTGRES_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : < PostgreSQL Port running inside container>
+      - '5432:5432'
+    expose:
+      # Opens port 5432 on the container
+      - '5432'
+      # Where our data will be persisted
+    volumes:
+      - postgres-db-vol:/var/lib/postgresql/data
+      - ./postgres/test.sql:/tmp/test.sql
+      - ./postgres/setup.sql:/tmp/setup.sql
+
+# Names our volume
+volumes:
+  mysql-db-vol:
+  postgres-db-vol:
