@@ -1,11 +1,14 @@
 # Quick setup to help those learning MySQL and PostgreSQL.
 
-This is a simple Docker Compose setup using [Docker](https://www.docker.com), and [MySQL](https://www.mysql.com/) and [PostgreSQL](https://www.postgresql.org/) databases.
-Quick way to deploy both databases for learning MySQL and PostgreSQL.
-This is used in the demonstration of development of both MySQL and PostgreSQL on [Docker Desktop](https://www.docker.com/products/docker-desktop/alternatives).
+This is a MySQL and PostgreSQL lab setup using Docker Compose, [Docker](https://www.docker.com), [Docker Desktop](https://www.docker.com/products/docker-desktop/alternatives), and [MySQL](https://www.mysql.com/) and [PostgreSQL](https://www.postgresql.org/) databases.
+It is a quick way to deploy both databases for learning MySQL and PostgreSQL.
+ 
 
-Below are the steps required to get this working on a base linux system.
+This setup was inspired while setting up a database lab for the Udemy course 
+[SQL - The Complete Developer's Guide (MySQL, PostgreSQL)
+](https://www.udemy.com/course/sql-the-complete-developers-guide-mysql-postgresql). Much thanks to instructors Maximilian Schwarzmüller and Manuel Lorenz.  
 
+## Outline
 - Clone mysql-postgres repo
 - Install SQLTools drivers: MySQL/MariaDB and PostreSQL (Optional)
 - Install Docker Desktop
@@ -153,7 +156,9 @@ docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -ppassword
 For development only. Add PGPASSWORD environment variable.
 
 ```
-export PGPASSWORD='password';
+export PGPASSWORD='password'; # macOS / Linux
+
+set PGPASSWORD='password';  # Windows OS
 ```
 
 ```
