@@ -7,7 +7,7 @@ This is used in the demonstration of development of both MySQL and PostgreSQL on
 Below are the steps required to get this working on a base linux system.
 
 - Clone mysql-postgres repo
-- Install SQLTools drivers: MySQL/MariaDB and PostreSQL.
+- Install SQLTools drivers: MySQL/MariaDB and PostreSQL (Optional)
 - Install Docker Desktop
 - Verify Docker setup
 - Start and deploy containers using docker-compose.yml
@@ -17,13 +17,44 @@ Below are the steps required to get this working on a base linux system.
 
 ## 1. Clone mysql-postgres repo
 
-    git clone git@github.com:fusion52/mysql-postgres.git
+```
+git clone https://github.com/fusion52/mysql-postgres.git
+```
 
 By default, your directory will be **mysql-postgres**. Allow this default. The docker container names will begin with this name. For example: **mysql-postgres_mysql-db_1**
 
-## 2. Install SQLTools drivers: MySQL/MariaDB and PostreSQL.
+```
+cd mysql-postgres
+```
 
-[Visual Studio Code](https://marketplace.visualstudio.com/vscode) extensions.
+```
+tree .
+```
+
+    .
+    ├── LICENSE
+    ├── README.md
+    ├── docker-compose.yml
+    ├── mysql
+    │   ├── README.md
+    │   ├── setup.sql
+    │   └── test.sql
+    ├── postgres
+    │   ├── README.md
+    │   ├── setup.sql
+    │   └── test.sql
+    └── vscode-extensions.png
+
+    2 directories, 10 files
+
+## 2. Install SQLTools drivers: MySQL/MariaDB and PostreSQL (Optional)
+
+Optional for those using [Visual Studio Code](https://code.visualstudio.com/) IDE.
+Install [Visual Studio Code](https://marketplace.visualstudio.com/vscode) extensions.
+
+- SQLTools MySQL/MariaDB Driver
+- SQLTools PostgreSQL/Redshift Driver
+
 Search for: **sqltools-driver**
 
 ![This is an image](./vscode-extensions.png)
@@ -36,21 +67,21 @@ Install Docker Desktop on your development server. Docker Compose will be includ
 
 ## 4. Verify Docker setup
 
-- Check docker version
+Check docker version
 
-  ```
-  docker --version
+```
+docker --version
 
-  Docker version 20.10.8, build 3967b7d
-  ```
+Docker version 20.10.8, build 3967b7d
+```
 
-- Check docker compose version
+Check docker compose version
 
-  ```
-  docker-compose --version
+```
+docker-compose --version
 
-  docker-compose version 1.29.2, build 5becea4c
-  ```
+docker-compose version 1.29.2, build 5becea4c
+```
 
 ## 5. Start and deploy containers using docker-compose.yml
 
@@ -58,6 +89,12 @@ Start and deploy MySQL and PostgreSQL database containers.
 
 ```
 docker-compose up -d
+```
+
+Check container logs. View output from containers.
+
+```
+docker-compose logs
 ```
 
 ```
@@ -72,12 +109,6 @@ postgres-db_1  |
 postgres-db_1  | 2021-12-09 03:43:28.946 UTC [1] LOG:  starting PostgreSQL 14.1 (Debian 14.1-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
 postgres-db_1  | 2021-12-09 03:43:28.947 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
 postgres-db_1  | 2021-12-09 03:43:28.947 UTC [1] LOG:  listening on IPv6 address "::", port 5432
-```
-
-Check container logs. View output from containers.
-
-```
-docker-compose logs
 ```
 
 List containers.
@@ -97,40 +128,48 @@ mysql-postgres_postgres-db_1   docker-entrypoint.sh postgres    Up      0.0.0.0:
 
 ### Test connection and Setup (default password is 'password')
 
+For development only. Passing password in the command. **_mysql -u root -password_**
+
 ```
-docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p < /tmp/test.sql"
-docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p < /tmp/setup.sql"
+docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -ppassword < /tmp/test.sql"
+docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -ppassword < /tmp/setup.sql"
 ```
 
 ```
-docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p -e 'SELECT version()'"
-docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p -e 'SELECT * FROM mysql.user'"
+docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -ppassword -e 'SELECT version()'"
+docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -ppassword -e 'SELECT * FROM mysql.user'"
 ```
 
 ### Login Database
 
 ```
-docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p"
+docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -ppassword"
 ```
 
 ## 7. PostgreSQL Docker container
 
 ### Test connection and Setup (default password is 'password')
 
+For development only. Add PGPASSWORD environment variable.
+
 ```
-docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres -W postgres -a -f /tmp/test.sql"
-docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres -W postgres -a -f /tmp/setup.sql"
+export PGPASSWORD='password';
 ```
 
 ```
-docker exec -it mysql-postgres_postgres-db_1 psql -U postgres -W postgres -c  "SELECT version()"
-docker exec -it mysql-postgres_postgres-db_1 psql -U postgres -W postgres -c "\l+"
+docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres postgres -a -f /tmp/test.sql"
+docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres postgres -a -f /tmp/setup.sql"
+```
+
+```
+docker exec -it mysql-postgres_postgres-db_1 psql -U postgres postgres -c  "SELECT version()"
+docker exec -it mysql-postgres_postgres-db_1 psql -U postgres postgres -c "\l+"
 ```
 
 ### Login Database
 
 ```
-docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres -W postgres"
+docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres postgres"
 ```
 
 ## 8. Stop MySQL and PostgreSQL database containers
