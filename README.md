@@ -6,11 +6,14 @@ This is used in the demonstration of development of both MySQL and PostgreSQL on
 
 Below are the steps required to get this working on a base linux system.
 
-- Install all required dependencies
+- Clone mysql-postgres repo
+- Install SQLTools drivers: MySQL/MariaDB and PostreSQL.
 - Install Docker Desktop
-- Start Database Service
-- Install and Configure Web Server
-- Start Web Server
+- Verify Docker setup
+- Start and deploy containers using docker-compose.yml
+- MySQL Docker container
+- PostgreSQL Docker container
+- Stop MySQL and PostgreSQL database containers
 
 ## 1. Clone mysql-postgres repo
 
@@ -18,17 +21,20 @@ Below are the steps required to get this working on a base linux system.
 
 By default, your directory will be **mysql-postgres**. Allow this default. The docker container names will begin with this name. For example: **mysql-postgres_mysql-db_1**
 
-## 2.
+## 2. Install SQLTools drivers: MySQL/MariaDB and PostreSQL.
 
-Install SQLTools drivers: MySQL/MariaDB and PostreSQL. [Download](https://marketplace.visualstudio.com/search?term=tag%3Asqltools-driver&target=VSCode&category=All%20categories&sortBy=Relevance)
+[Visual Studio Code](https://marketplace.visualstudio.com/vscode) extensions.
+Search for: **sqltools-driver**
 
-## 2. Install Docker Desktop
+![This is an image](./vscode-extensions.png)
+
+## 3. Install Docker Desktop
 
 Download [Docker Desktop](https://www.docker.com/products/docker-desktop/alternatives) for your operating system.
 
 Install Docker Desktop on your development server. Docker Compose will be included in the installation.
 
-## 3. Check Docker setup
+## 4. Verify Docker setup
 
 - Check docker version
 
@@ -46,9 +52,9 @@ Install Docker Desktop on your development server. Docker Compose will be includ
   docker-compose version 1.29.2, build 5becea4c
   ```
 
-## 4. Deploy docker-compose.yml
+## 5. Start and deploy containers using docker-compose.yml
 
-Deploy MySQL and PostgreSQL database containers.
+Start and deploy MySQL and PostgreSQL database containers.
 
 ```
 docker-compose up -d
@@ -87,7 +93,7 @@ mysql-postgres_mysql-db_1      docker-entrypoint.sh --def ...   Up      0.0.0.0:
 mysql-postgres_postgres-db_1   docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp,:::5432->5432/tcp
 ```
 
-## 5. MySQL Docker container
+## 6. MySQL Docker container
 
 ### Test connection and Setup (default password is 'password')
 
@@ -107,7 +113,7 @@ docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p -e 'SEL
 docker exec -it mysql-postgres_mysql-db_1 /bin/bash -c "mysql -u root -p"
 ```
 
-## 6. PostgreSQL Docker container
+## 7. PostgreSQL Docker container
 
 ### Test connection and Setup (default password is 'password')
 
@@ -125,4 +131,13 @@ docker exec -it mysql-postgres_postgres-db_1 psql -U postgres -W postgres -c "\l
 
 ```
 docker exec -it mysql-postgres_postgres-db_1 /bin/bash -c "psql -U postgres -W postgres"
+```
+
+## 8. Stop MySQL and PostgreSQL database containers
+
+Stop MySQL and PostgreSQL database containers.
+Stop and remove resources.
+
+```
+docker-compose down
 ```
